@@ -1,0 +1,174 @@
+/**
+ * Verified 3-Day University Academic Schedule
+ * Target Department: Faculty of Specific Education - Educational Technology Department (2nd Year)
+ * Days: Saturday (السبت), Sunday (الأحد), Wednesday (الأربعاء)
+ */
+
+export const scheduleData = {
+  saturday: [
+    {
+      id: "sat-1",
+      title: "نظريات تربوية وإدارية",
+      type: "مقرر اختياري 2",
+      doctor: "أحمد محسن / هديل كيوان",
+      location: "مدرج 9 أ",
+      time: "08:00 ص - 09:59 ص",
+      status: "قائمة",
+      period: "morning",
+      isLab: false
+    },
+    {
+      id: "sat-2",
+      title: "تصميم وإنتاج بيئات الوسائط المتكاملة (تطبيقات)",
+      type: "تطبيقات عملية",
+      doctor: "إنجي إبراهيم",
+      location: "معمل كمبيوتر 274 (الدور الثاني)",
+      time: "10:00 ص - 11:29 ص",
+      status: "معمل",
+      period: "morning",
+      isLab: true
+    },
+    {
+      id: "sat-3",
+      title: "التمكين الرقمي (تطبيقات)",
+      type: "تطبيقات عملية",
+      doctor: "شيماء منصور",
+      location: "معمل كمبيوتر 274 (الدور الثاني)",
+      time: "11:30 ص - 12:29 م",
+      status: "معمل",
+      period: "noon",
+      isLab: true
+    },
+    {
+      id: "sat-4",
+      title: "الاتجاهات المعاصرة في علم النفس",
+      type: "محاضرة عامة",
+      doctor: "سيد عبد الحميد",
+      location: "مدرج 18 ج",
+      time: "01:00 م - 01:59 م",
+      status: "قائمة",
+      period: "afternoon",
+      isLab: false
+    }
+  ],
+  sunday: [
+    {
+      id: "sun-1",
+      title: "دمج ذوي الاحتياجات الخاصة",
+      type: "محاضرة عامة",
+      doctor: "نجوى فوزي",
+      location: "مدرج 18 ج",
+      time: "09:00 ص - 09:59 ص",
+      status: "قائمة",
+      period: "morning",
+      isLab: false
+    },
+    {
+      id: "sun-2",
+      title: "محفزات الألعاب التعليمية",
+      type: "مقرر اختياري",
+      doctor: "هند عباس",
+      location: "غرفة 234 بالكلية",
+      time: "10:00 ص - 11:29 ص",
+      status: "قائمة",
+      period: "morning",
+      isLab: false
+    },
+    {
+      id: "sun-3",
+      title: "تدريس مصغر (2)",
+      type: "تدريب عملي / سكشن",
+      doctor: "فاطمة حسن",
+      location: "قاعة 17 و",
+      time: "12:00 م - 01:59 م",
+      status: "قائمة",
+      period: "noon",
+      isLab: false
+    },
+    {
+      id: "sun-4",
+      title: "البرمجة وتطبيقاتها (تطبيقات)",
+      type: "تطبيقات عملية",
+      doctor: "إسراء عبد العزيز",
+      location: "غرفة 374 بالكلية (صناعي)",
+      time: "02:00 م - 03:59 م",
+      status: "معمل",
+      period: "afternoon",
+      isLab: true
+    }
+  ],
+  wednesday: [
+    {
+      id: "wed-1",
+      title: "تصميم الكتاب الإلكتروني",
+      type: "محاضرة أساسية",
+      doctor: "محمد أنور",
+      location: "غرفة 234 بالكلية",
+      time: "08:00 ص - 09:59 ص",
+      status: "قائمة",
+      period: "morning",
+      isLab: false
+    },
+    {
+      id: "wed-2",
+      title: "القوة الإيجابية في الشخصية / المهارات الحياتية",
+      type: "مقرر ثقافي اختياري",
+      doctor: "محمد زهران / طارق الشاذلي",
+      location: "مدرج 7 أ / غرفة 360",
+      time: "10:00 ص - 10:59 ص",
+      status: "قائمة",
+      period: "morning",
+      isLab: false
+    },
+    {
+      id: "wed-3",
+      title: "التمكين الرقمي",
+      type: "محاضرة أساسية",
+      doctor: "خلود إسلام",
+      location: "غرفة 207 بالكلية",
+      time: "11:00 ص - 11:29 ص",
+      status: "قائمة",
+      period: "noon",
+      isLab: false
+    },
+    {
+      id: "wed-4",
+      title: "البرمجة وتطبيقاتها",
+      type: "محاضرة أساسية",
+      doctor: "هيام العقيلي",
+      location: "غرفة 207 بالكلية",
+      time: "12:00 م - 12:29 م",
+      status: "قائمة",
+      period: "noon",
+      isLab: false
+    },
+    {
+      id: "wed-5",
+      title: "تصميم وإنتاج بيئات الوسائط المتكاملة",
+      type: "محاضرة ومعمل",
+      doctor: "أمل فوزي",
+      location: "غرفة 234 بالكلية",
+      time: "02:00 م - 03:59 م",
+      status: "قائمة",
+      period: "afternoon",
+      isLab: false
+    },
+    {
+      id: "wed-6",
+      title: "قضايا مجتمعية",
+      type: "محاضرة عامة",
+      doctor: "عبد الرازق شاكر",
+      location: "مدرج 18 ج",
+      time: "04:00 م - 05:59 م",
+      status: "قائمة",
+      period: "afternoon",
+      isLab: false
+    }
+  ]
+};
+
+export const activeDaysList = [
+  { key: 'saturday', label: 'السبت', shortLabel: 'سبت', tag: 'بداية الأسبوع' },
+  { key: 'sunday', label: 'الأحد', shortLabel: 'أحد', tag: 'يوم تطبيقي' },
+  { key: 'wednesday', label: 'الأربعاء', shortLabel: 'أربعاء', tag: 'المحاضرات الأساسية' }
+];

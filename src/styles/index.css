@@ -1,0 +1,239 @@
+@import "tailwindcss";
+
+@theme {
+  /* Colors from design.md */
+  --color-void-base: #0e0918;
+  --color-elevated-surface: #1a1624;
+  --color-deep-panel: #1b1728;
+  --color-muted-shell: #2c2834;
+  --color-border-smoke: #3e3a46;
+  --color-ash-text: #d1cece;
+  --color-fog-text: #9d9797;
+  --color-silver-rail: #e5e7eb;
+  --color-cloud-white: #ffffff;
+  --color-steel-muted: #48556a;
+  --color-ember-cta: #fd8925;
+  --color-electric-current: #077ac7;
+  --color-ember-scorch: #ff492c;
+  --color-crimson-glow: #56312d;
+
+  /* Typography */
+  --font-sans: 'IBM Plex Sans Arabic', 'DM Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: 'IBM Plex Sans Arabic', 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  /* Border Radii */
+  --radius-cards: 16px;
+  --radius-nodes: 12px;
+  --radius-pills: 9999px;
+  --radius-badges: 24px;
+  --radius-inputs: 8px;
+  --radius-buttons: 8px;
+  --radius-cards-large: 24px;
+
+  /* Spacing Scale */
+  --spacing-8: 8px;
+  --spacing-16: 16px;
+  --spacing-24: 24px;
+  --spacing-32: 32px;
+  --spacing-40: 40px;
+  --spacing-48: 48px;
+  --spacing-64: 64px;
+  --spacing-80: 80px;
+  --spacing-128: 128px;
+}
+
+:root {
+  --color-void-base: #0e0918;
+  --color-elevated-surface: #1a1624;
+  --color-deep-panel: #1b1728;
+  --color-muted-shell: #2c2834;
+  --color-border-smoke: #3e3a46;
+  --color-ash-text: #d1cece;
+  --color-fog-text: #9d9797;
+  --color-silver-rail: #e5e7eb;
+  --color-cloud-white: #ffffff;
+  --color-steel-muted: #48556a;
+  --color-ember-cta: #fd8925;
+  --gradient-ember-cta: linear-gradient(30deg, rgb(253, 137, 37), rgb(255, 12, 0));
+  --color-electric-current: #077ac7;
+  --gradient-electric-current: linear-gradient(141deg, rgb(7, 122, 199), rgb(107, 33, 239));
+  --color-ember-scorch: #ff492c;
+  --color-crimson-glow: #56312d;
+
+  --shadow-subtle: rgba(255, 255, 255, 0.2) 0px 1px 1px 0px inset, rgba(8, 8, 8, 0.2) 0px 1px 2px 0px, rgba(8, 8, 8, 0.08) 0px 4px 4px 0px, rgb(7, 122, 199) 0px 7px 0px -12px, rgba(255, 255, 255, 0.12) 0px 6px 12px 0px inset;
+  --shadow-sm: rgba(0, 0, 0, 0.26) 0px 0px 8px 0px;
+  --shadow-subtle-2: rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset, rgba(255, 142, 93, 0.3) 0px 1px 0px 0px inset;
+}
+
+/* Base Body and RTL Setup */
+html {
+  font-family: var(--font-sans);
+  direction: rtl;
+  color-scheme: dark;
+  background-color: #0e0918;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #0e0918;
+  color: #d1cece;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0e0918;
+}
+::-webkit-scrollbar-thumb {
+  background: #2c2834;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3e3a46;
+}
+
+/* Typography rules per design.md */
+.display-title {
+  font-size: 54px;
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  font-weight: 300;
+  color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .display-title {
+    font-size: 32px;
+    line-height: 1.1;
+  }
+}
+
+.heading-lg {
+  font-size: 32px;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  font-weight: 300;
+  color: #ffffff;
+}
+
+.heading-md {
+  font-size: 24px;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  font-weight: 400;
+  color: #ffffff;
+}
+
+.heading-sm {
+  font-size: 18px;
+  line-height: 1.35;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+/* Component Surface Tokens */
+.surface-elevated {
+  background-color: #1a1624;
+}
+
+.surface-deep {
+  background-color: #1b1728;
+}
+
+.surface-muted {
+  background-color: #2c2834;
+}
+
+.border-smoke {
+  border-color: #3e3a46;
+}
+
+/* Button variants defined in design.md */
+.btn-ember {
+  background: linear-gradient(30deg, rgb(253, 137, 37), rgb(255, 12, 0));
+  color: #ffffff;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 14px rgba(253, 137, 37, 0.25);
+}
+
+.btn-ember:hover {
+  filter: brightness(1.08);
+  box-shadow: 0 6px 20px rgba(253, 137, 37, 0.35);
+  transform: translateY(-1px);
+}
+
+.btn-ember:active {
+  transform: translateY(0);
+}
+
+.btn-ghost-outline {
+  background: transparent;
+  border: 1px solid #e5e7eb;
+  color: #ffffff;
+  font-weight: 400;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.btn-ghost-outline:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: #ffffff;
+}
+
+.btn-frosted-ghost {
+  background: rgba(13, 10, 25, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #d1cece;
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.26) 0px 0px 8px 0px;
+  transition: all 0.2s ease;
+}
+
+.btn-frosted-ghost:hover {
+  background: rgba(44, 40, 52, 0.6);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+/* Glowing Inset Card defined in design.md */
+.card-glowing-inset {
+  background: transparent;
+  box-shadow: rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset, rgba(255, 142, 93, 0.3) 0px 1px 0px 0px inset;
+  border-radius: 24px;
+}
+
+/* Standard Feature Card defined in design.md */
+.feature-card {
+  background-color: #1a1624;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.feature-card:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Print Styles */
+@media print {
+  body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+}
