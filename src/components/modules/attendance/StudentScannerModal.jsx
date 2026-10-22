@@ -115,18 +115,55 @@ export default function StudentScannerModal({
         aspectRatio: 1.0
       };
 
-      const cameraConstraint = { facingMode: { ideal: mode } };
+      // 1. Resolve Best Camera Constraint / Device ID
+      let cameraSource = { facingMode: { ideal: mode } };
 
-      await html5QrCode.start(
-        cameraConstraint,
-        config,
-        (decodedText) => {
-          handleScanSuccess(decodedText);
-        },
-        () => {
-          // Frame parse miss — normal during video scanning
+      try {
+        if (navigator?.mediaDevices?.enumerateDevices) {
+          const devices = await navigator.mediaDevices.enumerateDevices();
+          const videoDevices = devices.filter((d) => d.kind === 'videoinput');
+
+          if (videoDevices.length > 0) {
+            // Check if a dedicated rear/back camera exists
+            const backCamera = videoDevices.find((d) =>
+              /back|rear|environment|خلفي/i.test(d.label)
+            );
+
+            if (mode === 'environment' && backCamera) {
+              cameraSource = backCamera.deviceId;
+            } else if (mode === 'user') {
+              const frontCamera = videoDevices.find((d) =>
+                /front|user|webcam|facetime|أمامي/i.test(d.label)
+              );
+              cameraSource = frontCamera ? frontCamera.deviceId : videoDevices[0].deviceId;
+            } else {
+              // Laptops, Desktops, or single-camera devices: fallback seamlessly to the available webcam
+              cameraSource = videoDevices[0].deviceId;
+            }
+          }
         }
-      );
+      } catch (enumErr) {
+        console.warn('enumerateDevices detection notice:', enumErr);
+      }
+
+      // 2. Start Scanner with Graceful Multi-Tier Fallback
+      try {
+        await html5QrCode.start(
+          cameraSource,
+          config,
+          (decodedText) => handleScanSuccess(decodedText),
+          () => {} // Frame parse miss — normal during video scanning
+        );
+      } catch (firstStartErr) {
+        console.warn('Primary camera source start failed, applying universal video fallback:', firstStartErr);
+        // Fallback tier: flexible ideal facingMode or generic video input
+        await html5QrCode.start(
+          { facingMode: { ideal: 'user' } },
+          config,
+          (decodedText) => handleScanSuccess(decodedText),
+          () => {}
+        );
+      }
 
       setCameraStatus('active');
 
@@ -135,6 +172,8 @@ export default function StudentScannerModal({
         const capabilities = html5QrCode.getRunningTrackCameraCapabilities();
         if (capabilities && capabilities.torchFeature && capabilities.torchFeature().isSupported()) {
           setHasTorch(true);
+        } else {
+          setHasTorch(false);
         }
       } catch {
         setHasTorch(false);
