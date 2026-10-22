@@ -96,8 +96,9 @@ export default function SignUpForm({ onSuccess }) {
 
       {/* Division Selector */}
       <div className="space-y-1.5">
-        <label className="block text-xs font-semibold text-[#d1cece]">الشعبة والفرقة الدراسية</label>
+        <label htmlFor="signup-division" className="block text-xs font-semibold text-[#d1cece]">الشعبة والفرقة الدراسية</label>
         <select
+          id="signup-division"
           value={academicDivision}
           onChange={(e) => setAcademicDivision(e.target.value)}
           className="w-full bg-[#1b1728] border border-[#3e3a46] rounded-lg text-xs text-white p-2.5 outline-none focus:border-[#fd8925]"
@@ -135,6 +136,7 @@ export default function SignUpForm({ onSuccess }) {
               type="button"
               onClick={() => setShowPassword(!showPassword)}
               className="text-[#9d9797] hover:text-white p-1"
+              aria-label={showPassword ? 'إخفاء تأكيد كلمة المرور' : 'إظهار تأكيد كلمة المرور'}
             >
               {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             </button>
@@ -144,8 +146,9 @@ export default function SignUpForm({ onSuccess }) {
 
       {/* Terms Checkbox */}
       <div className="pt-1">
-        <label className="flex items-start gap-2 cursor-pointer text-xs text-[#d1cece]">
+        <label htmlFor="agree-terms-checkbox" className="flex items-start gap-2 cursor-pointer text-xs text-[#d1cece]">
           <input
+            id="agree-terms-checkbox"
             type="checkbox"
             required
             checked={agreeTerms}

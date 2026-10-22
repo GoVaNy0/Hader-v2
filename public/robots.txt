@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hader-v2.vercel.app/sitemap.xml

@@ -58,8 +58,9 @@ export default function ExcusesModal({ isOpen, onClose }) {
       <form onSubmit={handleSubmit} className="space-y-4 text-right">
         {/* Lecture Selector */}
         <div className="space-y-1.5">
-          <label className="block text-xs font-semibold text-[#d1cece]">المحاضرة المراد تقديم العذر لها</label>
+          <label htmlFor="excuse-lecture" className="block text-xs font-semibold text-[#d1cece]">المحاضرة المراد تقديم العذر لها</label>
           <select
+            id="excuse-lecture"
             value={lectureId}
             onChange={(e) => setLectureId(e.target.value)}
             className="w-full bg-[#1b1728] border border-[#3e3a46] rounded-lg text-xs text-white p-2.5 outline-none focus:border-[#fd8925]"
@@ -74,8 +75,9 @@ export default function ExcusesModal({ isOpen, onClose }) {
 
         {/* Reason Selector */}
         <div className="space-y-1.5">
-          <label className="block text-xs font-semibold text-[#d1cece]">نوع العذر</label>
+          <label htmlFor="excuse-reason" className="block text-xs font-semibold text-[#d1cece]">نوع العذر</label>
           <select
+            id="excuse-reason"
             value={reason}
             onChange={(e) => setReason(e.target.value)}
             className="w-full bg-[#1b1728] border border-[#3e3a46] rounded-lg text-xs text-white p-2.5 outline-none focus:border-[#fd8925]"
@@ -89,8 +91,9 @@ export default function ExcusesModal({ isOpen, onClose }) {
 
         {/* Detailed Note */}
         <div className="space-y-1.5">
-          <label className="block text-xs font-semibold text-[#d1cece]">تفاصيل وملاحظات العذر</label>
+          <label htmlFor="excuse-note" className="block text-xs font-semibold text-[#d1cece]">تفاصيل وملاحظات العذر</label>
           <textarea
+            id="excuse-note"
             required
             rows={3}
             value={note}
@@ -102,17 +105,19 @@ export default function ExcusesModal({ isOpen, onClose }) {
 
         {/* Attachment Upload Simulation */}
         <div className="space-y-1.5">
-          <label className="block text-xs font-semibold text-[#d1cece]">المستند الطبي أو الإثبات (PDF أو صورة)</label>
-          <label className="flex flex-col items-center justify-center p-4 border border-dashed border-[#3e3a46] hover:border-[#fd8925] rounded-xl bg-[#1b1728]/50 cursor-pointer transition-colors group">
+          <label htmlFor="excuse-file" className="block text-xs font-semibold text-[#d1cece]">المستند الطبي أو الإثبات (PDF أو صورة)</label>
+          <label htmlFor="excuse-file" className="flex flex-col items-center justify-center p-4 border border-dashed border-[#3e3a46] hover:border-[#fd8925] rounded-xl bg-[#1b1728]/50 cursor-pointer transition-colors group">
             <Upload className="w-5 h-5 text-[#9d9797] group-hover:text-[#fd8925] mb-1" />
             <span className="text-xs text-[#d1cece]">
               {fileName ? fileName : 'انقر لإرفاق التقرير الطبي أو المستند'}
             </span>
             <span className="text-[10px] text-[#9d9797] mt-0.5">الحد الأقصى 5 ميجابايت</span>
             <input
+              id="excuse-file"
               type="file"
               className="hidden"
               accept=".pdf,image/*"
+              aria-label="إرفاق المستند الطبي أو الإثبات"
               onChange={(e) => {
                 if (e.target.files?.[0]) {
                   setFileName(e.target.files[0].name);

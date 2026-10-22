@@ -45,6 +45,7 @@ export default function SessionPrintView({
               type="button"
               onClick={onClose}
               className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10"
+              aria-label="إغلاق معاينة الطباعة"
             >
               <X className="w-5 h-5" />
             </button>

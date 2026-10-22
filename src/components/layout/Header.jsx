@@ -78,6 +78,7 @@ export default function Header({ onOpenNotifications }) {
                 : 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30 hover:bg-emerald-500/25'
             }`}
             title="اضغط للتبديل الفوري بين وضع الطالب ووضع ممثل الدفعة"
+            aria-label={isLeader ? 'التبديل إلى وضع الطالب' : 'التبديل إلى وضع ممثل الدفعة'}
           >
             {isLeader ? (
               <>
@@ -93,14 +94,16 @@ export default function Header({ onOpenNotifications }) {
           </button>
 
           {/* Attendance Streak Badge */}
-          <div
+          <button
+            type="button"
             onClick={() => triggerToast(`سلسلة الالتزام الحالية: ${user.streakDays || 12} يوماً متتالياً بدون غياب 🔥`)}
             className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1a1624] border border-[#3e3a46] text-amber-400 text-xs font-bold cursor-pointer hover:border-amber-500/40 transition-colors"
             title="أيام الالتزام المتتالية بالحضور"
+            aria-label={`سلسلة الالتزام: ${user?.streakDays || 12} يوماً متتالياً`}
           >
             <Flame className="w-4 h-4 fill-amber-400 text-amber-400" />
             <span>{user.streakDays || 12} يوم</span>
-          </div>
+          </button>
 
           {/* Notifications Trigger */}
           <button

@@ -2,17 +2,56 @@
 <html lang="ar" dir="rtl" class="dark">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0e0918" />
-    <meta name="description" content="منصة حاضر (Hader-V2) — النظام الأكاديمي الذكي الموثق للحضور والجداول لطلاب قسم تكنولوجيا التعليم" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="manifest" href="/manifest.json" />
-    <title>حاضر | Hader-V2 — منصة الحضور والجدول الأكاديمي</title>
+    <meta name="robots" content="index, follow" />
     
-    <!-- Google Fonts: IBM Plex Sans Arabic + DM Sans (geomanist substitute) -->
+    <title>حاضر | Hader-V2 — منصة الحضور والجدول الأكاديمي</title>
+    <meta name="description" content="منصة حاضر (Hader-V2) — النظام الأكاديمي الذكي الموثق للحضور والجداول لطلاب قسم تكنولوجيا التعليم بكلية التربية النوعية" />
+    
+    <!-- Canonical & Alternate URLs -->
+    <link rel="canonical" href="https://hader-v2.vercel.app/" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://hader-v2.vercel.app/" />
+    <meta property="og:site_name" content="منصة حاضر الأكاديمية" />
+    <meta property="og:title" content="حاضر | Hader-V2 — منصة الحضور والجدول الأكاديمي" />
+    <meta property="og:description" content="النظام الأكاديمي الذكي الموثق بالجغرافيا والبصمة الرقمية لحضور وجداول قسم تكنولوجيا التعليم" />
+    <meta property="og:image" content="https://hader-v2.vercel.app/favicon.svg" />
+    <meta property="og:locale" content="ar_EG" />
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="حاضر | Hader-V2 — منصة الحضور والجدول الأكاديمي" />
+    <meta name="twitter:description" content="النظام الأكاديمي الذكي الموثق بالجغرافيا والبصمة الرقمية لحضور وجداول قسم تكنولوجيا التعليم" />
+    <meta name="twitter:image" content="https://hader-v2.vercel.app/favicon.svg" />
+
+    <!-- Favicon & PWA Manifest -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.json" />
+    
+    <!-- Optimized Google Fonts: Preconnect + Preload + Non-render-blocking async load -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap"
+      />
+    </noscript>
   </head>
   <body class="bg-[#0e0918] text-[#d1cece] antialiased min-h-screen selection:bg-[#fd8925] selection:text-white overflow-x-hidden">
     <div id="root"></div>

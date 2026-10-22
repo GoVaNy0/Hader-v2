@@ -63,10 +63,11 @@ export default function LeaderGeneratorModal({
           {/* Controls: Course & Week */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-semibold text-[#d1cece] mb-1">
+              <label htmlFor="leader-course-select" className="block text-xs font-semibold text-[#d1cece] mb-1">
                 المقرر الدراسي
               </label>
               <select
+                id="leader-course-select"
                 value={selectedCourseId}
                 onChange={(e) => setSelectedCourseId(e.target.value)}
                 className="w-full bg-[#1b1728] border border-[#3e3a46] rounded-lg text-xs text-white p-2 outline-none focus:border-[#fd8925]"
@@ -80,10 +81,11 @@ export default function LeaderGeneratorModal({
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-[#d1cece] mb-1">
+              <label htmlFor="leader-week-select" className="block text-xs font-semibold text-[#d1cece] mb-1">
                 الأسبوع الأكاديمي
               </label>
               <select
+                id="leader-week-select"
                 value={selectedWeek}
                 onChange={(e) => setSelectedWeek(Number(e.target.value))}
                 className="w-full bg-[#1b1728] border border-[#3e3a46] rounded-lg text-xs text-white p-2 outline-none focus:border-[#fd8925]"

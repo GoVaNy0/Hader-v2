@@ -44,11 +44,12 @@ export default function FraudLogsTable() {
         </div>
 
         {/* Severity Filter Pills */}
-        <div className="flex items-center gap-1.5 p-1 rounded-xl bg-[#1a1624] border border-[#3e3a46]/60 text-xs">
+        <div role="group" aria-label="تصفية حسب درجة الخطورة" className="flex items-center gap-1.5 p-1 rounded-xl bg-[#1a1624] border border-[#3e3a46]/60 text-xs">
           {['ALL', 'CRITICAL', 'HIGH', 'MEDIUM'].map((sev) => (
             <button
               key={sev}
               type="button"
+              aria-pressed={filterSeverity === sev}
               onClick={() => setFilterSeverity(sev)}
               className={`px-2.5 py-1 rounded-lg font-mono font-medium transition-colors cursor-pointer ${
                 filterSeverity === sev

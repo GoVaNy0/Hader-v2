@@ -23,10 +23,11 @@ export default function ScheduleSearchBar({
           <Search className="w-4 h-4" />
         </div>
         <input
-          type="text"
+          type="search"
           value={searchQuery}
           onChange={(e) => onSearchChange(e.target.value)}
           placeholder="ابحث باسم المادة، الأستاذ، أو رقم المدرج والمعمل..."
+          aria-label="ابحث باسم المادة أو الأستاذ أو رقم المدرج والمعمل"
           className="w-full bg-[#1a1624] border border-[#3e3a46]/70 focus:border-[#fd8925] rounded-xl text-xs text-white placeholder-[#9d9797] py-2.5 pr-10 pl-9 outline-none transition-colors"
         />
         {searchQuery && (
@@ -34,6 +35,7 @@ export default function ScheduleSearchBar({
             type="button"
             onClick={() => onSearchChange('')}
             className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9d9797] hover:text-white p-1"
+            aria-label="مسح نص البحث"
           >
             <X className="w-3.5 h-3.5" />
           </button>

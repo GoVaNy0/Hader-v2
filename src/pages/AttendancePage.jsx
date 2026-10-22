@@ -79,8 +79,10 @@ export default function AttendancePage() {
       </div>
 
       {/* Main 3-Tab Navigator */}
-      <div className="flex items-center p-1 rounded-2xl bg-[#1a1624] border border-[#3e3a46]/70 w-full overflow-x-auto">
+      <div role="tablist" aria-label="أقسام محرك الحضور" className="flex items-center p-1 rounded-2xl bg-[#1a1624] border border-[#3e3a46]/70 w-full overflow-x-auto">
         <button
+          role="tab"
+          aria-selected={activeTab === 'student'}
           type="button"
           onClick={() => handleTabChange('student')}
           className={`flex-1 min-w-[130px] py-2.5 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
@@ -94,6 +96,8 @@ export default function AttendancePage() {
         </button>
 
         <button
+          role="tab"
+          aria-selected={activeTab === 'leader'}
           type="button"
           onClick={() => handleTabChange('leader')}
           className={`flex-1 min-w-[130px] py-2.5 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
@@ -107,6 +111,8 @@ export default function AttendancePage() {
         </button>
 
         <button
+          role="tab"
+          aria-selected={activeTab === 'incidents'}
           type="button"
           onClick={() => handleTabChange('incidents')}
           className={`flex-1 min-w-[130px] py-2.5 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${

@@ -63,6 +63,7 @@ export default function SignInForm({ onSuccess, onForgotPassword }) {
             type="button"
             onClick={() => setShowPassword(!showPassword)}
             className="text-[#9d9797] hover:text-white p-1"
+            aria-label={showPassword ? 'إخفاء كلمة المرور' : 'إظهار كلمة المرور'}
           >
             {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
           </button>
@@ -71,8 +72,9 @@ export default function SignInForm({ onSuccess, onForgotPassword }) {
 
       {/* Options Row */}
       <div className="flex items-center justify-between text-xs pt-1">
-        <label className="flex items-center gap-2 cursor-pointer text-[#d1cece]">
+        <label htmlFor="remember-me-checkbox" className="flex items-center gap-2 cursor-pointer text-[#d1cece]">
           <input
+            id="remember-me-checkbox"
             type="checkbox"
             checked={rememberMe}
             onChange={(e) => setRememberMe(e.target.checked)}

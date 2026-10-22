@@ -14,7 +14,7 @@ export default function DaySwitcher({
     <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 mb-6">
       
       {/* 3 Day Switcher Tabs */}
-      <div className="flex items-center p-1 rounded-xl bg-[#1a1624] border border-[#3e3a46]/60 w-full sm:w-auto">
+      <div role="tablist" aria-label="أيام الجدول الدراسي" className="flex items-center p-1 rounded-xl bg-[#1a1624] border border-[#3e3a46]/60 w-full sm:w-auto">
         {daysList.map((day) => {
           const isSelected = selectedDay === day.key;
           const isToday = todayKey === day.key;
@@ -22,6 +22,8 @@ export default function DaySwitcher({
           return (
             <button
               key={day.key}
+              role="tab"
+              aria-selected={isSelected}
               type="button"
               onClick={() => onSelectDay(day.key)}
               className={`flex-1 sm:flex-initial px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5 ${
