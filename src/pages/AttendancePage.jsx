@@ -24,6 +24,7 @@ import StudentCardModal from '../components/modules/home/StudentCardModal';
 import SessionPrintView from '../components/modules/attendance/SessionPrintView';
 import FraudLogsTable from '../components/modules/security/FraudLogsTable';
 import DeviceVerificationBadge from '../components/modules/security/DeviceVerificationBadge';
+import AttendanceStatusIndicator from '../components/modules/attendance/AttendanceStatusIndicator';
 import { useAuth } from '../context/AuthContext';
 import { useAttendance } from '../context/AttendanceContext';
 import { useGeolocation } from '../hooks/useGeolocation';
@@ -223,8 +224,31 @@ export default function AttendancePage() {
 
             </div>
 
-            {/* Right Column: Hardware Security */}
+            {/* Right Column: Attendance Status & Hardware Security */}
             <div className="lg:col-span-5 space-y-5">
+              
+              {/* Interactive 60fps Attendance Status Indicator */}
+              <Card variant="feature" className="p-5 md:p-6 text-center">
+                <div className="flex items-center justify-between mb-4 text-right">
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-lg bg-[#2c2834] flex items-center justify-center text-[#fd8925]">
+                      <ScanLine className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-bold text-white">مؤشر الحضور التفاعلي</h4>
+                      <span className="text-[10px] text-[#9d9797]">رصد التردد الراداري والتحقق البيومتري (60fps)</span>
+                    </div>
+                  </div>
+                  <Badge variant="pill" size="xs">
+                    تفاعلي SVG
+                  </Badge>
+                </div>
+
+                <div className="py-2 flex justify-center">
+                  <AttendanceStatusIndicator size={200} interactive={true} />
+                </div>
+              </Card>
+
               <DeviceVerificationBadge />
             </div>
 

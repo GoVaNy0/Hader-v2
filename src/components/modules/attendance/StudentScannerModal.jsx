@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Camera, MapPin, ShieldCheck, ShieldAlert, Sparkles, RefreshCw, CheckCircle2 } from 'lucide-react';
 import Modal from '../../common/Modal';
 import Button from '../../common/Button';
 import Badge from '../../common/Badge';
+import AttendanceStatusIndicator from './AttendanceStatusIndicator';
 import { useAttendance } from '../../../context/AttendanceContext';
 import { useAuth } from '../../../context/AuthContext';
 
@@ -13,7 +14,15 @@ export default function StudentScannerModal({
 }) {
   const { verifyAttendance, gpsSimStatus, setGpsSimStatus } = useAttendance();
   const { user } = useAuth();
+  const [scanStatus, setScanStatus] = useState('scanning');
   const [isVerifying, setIsVerifying] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      setScanStatus('scanning');
+      setIsVerifying(false);
+    }
+  }, [isOpen]);
 
   const activeLecture = lecture || {
     id: 'sat-2',
@@ -24,9 +33,14 @@ export default function StudentScannerModal({
   const handleScan = async () => {
     setIsVerifying(true);
     const success = await verifyAttendance(activeLecture);
-    setIsVerifying(false);
     if (success) {
-      onClose();
+      setScanStatus('confirmed');
+      setTimeout(() => {
+        setIsVerifying(false);
+        onClose();
+      }, 1300);
+    } else {
+      setIsVerifying(false);
     }
   };
 
@@ -40,21 +54,18 @@ export default function StudentScannerModal({
     >
       <div className="flex flex-col items-center text-center space-y-4">
         
-        {/* Camera Viewfinder Simulation */}
-        <div className="relative w-full aspect-square max-w-[280px] bg-[#0e0918] rounded-2xl border-2 border-[#3e3a46] overflow-hidden flex flex-col items-center justify-center p-4 shadow-inner">
-          
-          {/* Scanning Reticle Frame */}
-          <div className="absolute inset-6 border-2 border-dashed border-[#fd8925]/60 rounded-xl pointer-events-none animate-pulse flex items-center justify-center">
-            <div className="w-full h-0.5 bg-gradient-to-r from-transparent via-[#fd8925] to-transparent shadow-[0_0_8px_#fd8925] animate-bounce" />
-          </div>
+        {/* Interactive 60fps SVG Attendance Indicator */}
+        <AttendanceStatusIndicator
+          status={scanStatus}
+          onStatusChange={setScanStatus}
+          size={240}
+          showLabel={false}
+          interactive={false}
+        />
 
-          <Camera className="w-10 h-10 text-[#9d9797] mb-2 opacity-50" />
-          <span className="text-xs text-[#d1cece] font-medium z-10">
-            وجّه الكاميرا نحو كود الشاشة أو بطاقة المحاضر
-          </span>
-          <span className="text-[10px] text-[#9d9797] mt-1 z-10 font-mono">
-            المعرف النشط: {user?.code || '20230894'}
-          </span>
+        <div className="flex items-center justify-between w-full max-w-[240px] px-1 text-xs">
+          <span className="text-[#9d9797]">المعرف النشط:</span>
+          <span className="font-mono text-white font-bold">{user?.code || '20230894'}</span>
         </div>
 
         {/* GPS Geofence Proximity Tester (Dev & Simulation Feature) */}

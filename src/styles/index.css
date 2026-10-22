@@ -237,3 +237,153 @@ body {
     display: block !important;
   }
 }
+
+/* =========================================================================
+   ATTENDANCE STATUS INDICATOR (60fps GPU-Accelerated SVG Animations)
+   ========================================================================= */
+
+@keyframes attendance-pulse {
+  0%, 100% {
+    transform: scale(0.98);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+@keyframes attendance-radar {
+  0% {
+    transform: scale(0.82);
+    opacity: 0.85;
+  }
+  50% {
+    opacity: 0.45;
+  }
+  100% {
+    transform: scale(1.58);
+    opacity: 0;
+  }
+}
+
+@keyframes attendance-laser-sweep {
+  0% {
+    transform: translateY(-56px);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.85;
+  }
+  80% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateY(56px);
+    opacity: 0;
+  }
+}
+
+@keyframes attendance-spring-pop {
+  0% {
+    transform: scale(0.68);
+    opacity: 0;
+  }
+  45% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+  70% {
+    transform: scale(0.96);
+  }
+  88% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes attendance-confirm-ping {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.95;
+    stroke-width: 3.5px;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+    stroke-width: 0.5px;
+  }
+}
+
+@keyframes attendance-check-draw {
+  0% {
+    stroke-dashoffset: 70;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* SVG Transform Origin Fix for cross-browser hardware acceleration */
+.svg-origin-center {
+  transform-box: fill-box;
+  transform-origin: center;
+  will-change: transform, opacity;
+}
+
+.animate-attendance-brackets {
+  animation: attendance-pulse 3s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+  will-change: transform;
+}
+
+.animate-radar-ring-1 {
+  animation: attendance-radar 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+  will-change: transform, opacity;
+}
+
+.animate-radar-ring-2 {
+  animation: attendance-radar 2.4s cubic-bezier(0.16, 1, 0.3, 1) 0.8s infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+  will-change: transform, opacity;
+}
+
+.animate-radar-ring-3 {
+  animation: attendance-radar 2.4s cubic-bezier(0.16, 1, 0.3, 1) 1.6s infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+  will-change: transform, opacity;
+}
+
+.animate-attendance-laser {
+  animation: attendance-laser-sweep 2.2s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+  will-change: transform, opacity;
+}
+
+.animate-attendance-pop {
+  animation: attendance-spring-pop 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  transform-box: fill-box;
+  transform-origin: center;
+  will-change: transform, opacity;
+}
+
+.animate-verified-ring {
+  animation: attendance-confirm-ping 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform-box: fill-box;
+  transform-origin: center;
+  will-change: transform, opacity;
+}
+
+.animate-check-stroke {
+  stroke-dasharray: 70;
+  stroke-dashoffset: 70;
+  animation: attendance-check-draw 0.5s ease-out 0.15s forwards;
+}
+
