@@ -23,6 +23,9 @@ export default defineConfig({
             if (id.includes('qrcode.react')) {
               return 'vendor-qrcode';
             }
+            if (id.includes('html5-qrcode')) {
+              return 'vendor-camera';
+            }
             if (
               id.includes('/react/') ||
               id.includes('/react-dom/') ||

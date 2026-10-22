@@ -387,3 +387,39 @@ body {
   animation: attendance-check-draw 0.5s ease-out 0.15s forwards;
 }
 
+/* =========================================================================
+   NATIVE HTML5-QRCODE CAMERA OVERLAYS & EMBEDDED STREAM STYLING
+   ========================================================================= */
+#qr-reader {
+  width: 100% !important;
+  height: 100% !important;
+  border: none !important;
+  background-color: #0e0918 !important;
+  position: relative !important;
+}
+
+#qr-reader video {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border-radius: 1rem !important;
+}
+
+#qr-reader__scan_region {
+  background: transparent !important;
+  min-height: 100% !important;
+}
+
+#qr-reader__scan_region img {
+  display: none !important;
+}
+
+#qr-reader__dashboard {
+  display: none !important;
+}
+
+#qr-reader__header_message {
+  display: none !important;
+}
+
+
