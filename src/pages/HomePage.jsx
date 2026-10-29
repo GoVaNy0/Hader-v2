@@ -3,11 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import HeroLectureCard from '../components/modules/home/HeroLectureCard';
 import GrowthTreeWidget from '../components/modules/home/GrowthTreeWidget';
 import DailySummary from '../components/modules/home/DailySummary';
-import StudentCardModal from '../components/modules/home/StudentCardModal';
-import ExcusesModal from '../components/modules/home/ExcusesModal';
-import StudentScannerModal from '../components/modules/attendance/StudentScannerModal';
-import LeaderGeneratorModal from '../components/modules/attendance/LeaderGeneratorModal';
 import DeviceVerificationBadge from '../components/modules/security/DeviceVerificationBadge';
+
+const StudentCardModal = React.lazy(() => import('../components/modules/home/StudentCardModal'));
+const ExcusesModal = React.lazy(() => import('../components/modules/home/ExcusesModal'));
+const StudentScannerModal = React.lazy(() => import('../components/modules/attendance/StudentScannerModal'));
+const LeaderGeneratorModal = React.lazy(() => import('../components/modules/attendance/LeaderGeneratorModal'));
 import Card from '../components/common/Card';
 import Button from '../components/common/Button';
 import Badge from '../components/common/Badge';
@@ -142,27 +143,38 @@ export default function HomePage() {
       </div>
 
       {/* Modals */}
-      <StudentCardModal
-        isOpen={isStudentCardOpen}
-        onClose={() => setIsStudentCardOpen(false)}
-      />
+      {/* Modals rendered on-demand via Suspense */}
+      <React.Suspense fallback={null}>
+        {isStudentCardOpen && (
+          <StudentCardModal
+            isOpen={isStudentCardOpen}
+            onClose={() => setIsStudentCardOpen(false)}
+          />
+        )}
 
-      <ExcusesModal
-        isOpen={isExcuseOpen}
-        onClose={() => setIsExcuseOpen(false)}
-      />
+        {isExcuseOpen && (
+          <ExcusesModal
+            isOpen={isExcuseOpen}
+            onClose={() => setIsExcuseOpen(false)}
+          />
+        )}
 
-      <StudentScannerModal
-        isOpen={isScannerOpen}
-        onClose={() => setIsScannerOpen(false)}
-        lecture={upcomingLecture}
-      />
+        {isScannerOpen && (
+          <StudentScannerModal
+            isOpen={isScannerOpen}
+            onClose={() => setIsScannerOpen(false)}
+            lecture={upcomingLecture}
+          />
+        )}
 
-      <LeaderGeneratorModal
-        isOpen={isLeaderGenOpen}
-        onClose={() => setIsLeaderGenOpen(false)}
-        initialCourseId={upcomingLecture?.id}
-      />
+        {isLeaderGenOpen && (
+          <LeaderGeneratorModal
+            isOpen={isLeaderGenOpen}
+            onClose={() => setIsLeaderGenOpen(false)}
+            initialCourseId={upcomingLecture?.id}
+          />
+        )}
+      </React.Suspense>
 
     </div>
   );

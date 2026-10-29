@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useId } from 'react';
 import { X } from 'lucide-react';
 
 export default function Modal({
@@ -10,6 +10,8 @@ export default function Modal({
   maxWidth = 'max-w-md',
   className = ''
 }) {
+  const titleId = useId();
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') onClose();
@@ -38,11 +40,12 @@ export default function Modal({
         className={`relative z-10 w-full ${maxWidth} bg-[#1a1624] border border-white/15 rounded-3xl shadow-2xl overflow-hidden transition-all duration-300 scale-100 ${className}`}
         role="dialog"
         aria-modal="true"
+        aria-labelledby={title ? titleId : undefined}
       >
         {/* Header */}
         <div className="px-5 py-4 border-b border-[#3e3a46]/60 flex items-center justify-between bg-[#1b1728]/50">
           <div>
-            <h3 className="text-base font-bold text-white tracking-tight">{title}</h3>
+            <h3 id={titleId} className="text-base font-bold text-white tracking-tight">{title}</h3>
             {subtitle && <p className="text-xs text-[#9d9797] mt-0.5">{subtitle}</p>}
           </div>
           <button

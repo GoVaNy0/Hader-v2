@@ -55,6 +55,7 @@ export default function DailySummary({ onOpenStudentCard, onOpenExcuseModal }) {
         <button
           type="button"
           onClick={onOpenStudentCard}
+          aria-label="عرض البطاقة الرقمية QR"
           className="p-4 rounded-2xl bg-[#1a1624] hover:bg-[#2c2834] border border-white/[0.07] hover:border-white/[0.15] text-right transition-all group flex items-start gap-3 cursor-pointer"
         >
           <div className="w-9 h-9 rounded-xl bg-[#2c2834] group-hover:bg-[#3e3a46] flex items-center justify-center text-[#fd8925] shrink-0 transition-colors">
@@ -73,6 +74,7 @@ export default function DailySummary({ onOpenStudentCard, onOpenExcuseModal }) {
         <button
           type="button"
           onClick={onOpenExcuseModal}
+          aria-label="تقديم عذر غياب رسمي"
           className="p-4 rounded-2xl bg-[#1a1624] hover:bg-[#2c2834] border border-white/[0.07] hover:border-white/[0.15] text-right transition-all group flex items-start gap-3 cursor-pointer"
         >
           <div className="w-9 h-9 rounded-xl bg-[#2c2834] group-hover:bg-[#3e3a46] flex items-center justify-center text-sky-400 shrink-0 transition-colors">

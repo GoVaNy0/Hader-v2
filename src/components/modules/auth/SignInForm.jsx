@@ -87,6 +87,7 @@ export default function SignInForm({ onSuccess, onForgotPassword }) {
           type="button"
           onClick={onForgotPassword}
           className="text-[#fd8925] hover:underline cursor-pointer"
+          aria-label="استعادة كلمة المرور المنسية"
         >
           نسيت كلمة المرور؟
         </button>

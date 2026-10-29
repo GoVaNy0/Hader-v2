@@ -43,7 +43,7 @@ export default function Header({ onOpenNotifications }) {
           </Link>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-1">
+          <nav aria-label="القائمة الرئيسية" className="hidden lg:flex items-center gap-1">
             {navLinks.map((link) => {
               const Icon = link.icon;
               const isActive = location.pathname === link.to || (link.to.includes('?') && location.search === link.to.split('?')[1]);

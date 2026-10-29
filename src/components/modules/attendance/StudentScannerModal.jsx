@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Html5Qrcode } from 'html5-qrcode';
 import {
   Camera,
   CameraOff,
@@ -106,6 +105,7 @@ export default function StudentScannerModal({
     setCameraError(null);
 
     try {
+      const { Html5Qrcode } = await import('html5-qrcode');
       const html5QrCode = new Html5Qrcode('qr-reader');
       html5QrCodeRef.current = html5QrCode;
 
@@ -397,9 +397,10 @@ export default function StudentScannerModal({
             </Badge>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div role="group" aria-label="محاكاة النطاق الجغرافي" className="flex items-center gap-2">
             <button
               type="button"
+              aria-pressed={gpsSimStatus === 'in_range'}
               onClick={() => setGpsSimStatus('in_range')}
               className={`flex-1 py-1.5 px-2 rounded-lg text-xs font-medium border transition-colors cursor-pointer ${
                 gpsSimStatus === 'in_range'
@@ -412,6 +413,7 @@ export default function StudentScannerModal({
 
             <button
               type="button"
+              aria-pressed={gpsSimStatus === 'out_of_range'}
               onClick={() => setGpsSimStatus('out_of_range')}
               className={`flex-1 py-1.5 px-2 rounded-lg text-xs font-medium border transition-colors cursor-pointer ${
                 gpsSimStatus === 'out_of_range'
