@@ -43,13 +43,14 @@ export default function ScheduleSearchBar({
       </div>
 
       {/* Filter Category Pills */}
-      <div className="flex items-center gap-1.5 p-1 rounded-xl bg-[#1a1624] border border-[#3e3a46]/60 self-start sm:self-auto overflow-x-auto w-full sm:w-auto">
+      <div role="group" aria-label="تصفية نوع المحاضرة" className="flex items-center gap-1.5 p-1 rounded-xl bg-[#1a1624] border border-[#3e3a46]/60 self-start sm:self-auto overflow-x-auto w-full sm:w-auto">
         {filterOptions.map((opt) => {
           const isActive = filterType === opt.key;
           return (
             <button
               key={opt.key}
               type="button"
+              aria-pressed={isActive}
               onClick={() => onFilterChange(opt.key)}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all whitespace-nowrap cursor-pointer ${
                 isActive

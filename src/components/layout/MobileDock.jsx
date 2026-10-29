@@ -22,7 +22,7 @@ export default function MobileDock({ onQuickScan }) {
 
   return (
     <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0e0918]/95 backdrop-blur-xl border-t border-[#3e3a46] px-3 py-2 pb-safe">
-      <nav className="flex items-center justify-around max-w-md mx-auto">
+      <nav aria-label="شريط التنقل السريع للهاتف" className="flex items-center justify-around max-w-md mx-auto">
         {navItems.map((item, index) => {
           const Icon = item.icon;
           

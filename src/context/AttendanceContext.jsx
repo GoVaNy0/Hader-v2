@@ -58,10 +58,10 @@ export function AttendanceProvider({ children }) {
   }, [loadTelemetry]);
 
   // Student QR verification handler
-  const verifyAttendance = async (courseInfo) => {
+  const verifyAttendance = async (courseInfo, scannedPayload) => {
     const isOut = gpsSimStatus === 'out_of_range';
     const result = await attendanceService.verifyStudentScan({
-      qrToken,
+      qrToken: scannedPayload || qrToken,
       studentId: user?.code || "20230894",
       studentName: user?.name || "جوفاني أيمن",
       courseId: courseInfo?.id || "sat-2",

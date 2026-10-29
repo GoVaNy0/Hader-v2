@@ -1,45 +1,162 @@
 /**
- * Mock Authentication Service
- * Decoupled Promise-based architecture with micro-latencies
+ * Hader-V2 Authentication Service
+ * Wired directly to Go Fiber backend on Fly.io (https://hader-websit.fly.dev)
+ * Handles hardware lock, Supabase token synchronization, and offline fallback.
  */
 
+import { apiClient, setStoredAuthToken, USER_STORAGE_KEY } from './apiClient';
 import { DEFAULT_STUDENT, DEFAULT_LEADER } from '../data/mockUserData';
+import { getDeviceFingerprint } from '../utils/deviceUtils';
 
-const USER_STORAGE_KEY = 'hader_current_user';
+// Helper to map academic division to department ID in Go backend
+function mapDivisionToDeptId(divisionKey) {
+  switch (divisionKey) {
+    case 'sec1_tech':
+      return 1;
+    case 'sec2_tech_general':
+      return 2;
+    case 'sec2_tech_teacher':
+      return 3;
+    case 'sec3_tech_instructional':
+      return 4;
+    case 'sec4_tech_graduation':
+      return 5;
+    default:
+      return 2; // Default to Sec2 Tech General
+  }
+}
+
+/**
+ * Maps Go backend UserResponse and AuthResponse into frontend state structure
+ */
+function mapServerUserToLocal(serverUser, token = null) {
+  const isLeader = serverUser.role === 'class_leader' || serverUser.role === 'admin';
+  const baseProfile = isLeader ? DEFAULT_LEADER : DEFAULT_STUDENT;
+  const currentStreak = serverUser.current_streak || 1;
+  const treePoints = currentStreak * 35 + 50;
+  const treeLevel = Math.min(5, Math.floor(treePoints / 100) + 1);
+
+  return {
+    ...baseProfile,
+    id: serverUser.id || `std-${serverUser.academic_id}`,
+    code: serverUser.academic_id || baseProfile.code,
+    name: serverUser.full_name || baseProfile.name,
+    email: serverUser.email || baseProfile.email,
+    role: isLeader ? 'leader' : 'student',
+    departmentId: serverUser.department_id,
+    streakDays: currentStreak,
+    treePoints,
+    treeLevel,
+    token: token || serverUser.token || baseProfile.token,
+    deviceBound: {
+      deviceId: getDeviceFingerprint().deviceId,
+      model: getDeviceFingerprint().model,
+      trusted: true,
+      lastVerified: 'الآن'
+    }
+  };
+}
 
 export const authService = {
   /**
-   * Simulate user login with academic ID/email and password
+   * Authenticate user with Go backend (/api/v1/auth/login)
+   * Sends hardware fingerprint in X-Device-Id and payload
    */
   async login({ identifier, password, role = 'student' }) {
-    await new Promise((resolve) => setTimeout(resolve, 350));
-
     if (!identifier || !password) {
       throw new Error('يرجى ملء جميع الحقول المطلوبة');
     }
 
+    const device = getDeviceFingerprint();
+    const loginRole = role === 'leader' ? 'class_leader' : 'student';
+
+    try {
+      // 1. Direct call to Fly.io Go backend
+      const res = await apiClient.post('/auth/login', {
+        identifier: identifier.trim(),
+        password,
+        login_role: loginRole,
+        device_id: device.deviceId,
+        device_name: device.model,
+        remember_me: true
+      });
+
+      if (res && res.data) {
+        const token = res.data.token;
+        const serverUser = res.data.user;
+
+        // Persist token and user in storage
+        if (token) setStoredAuthToken(token);
+        const mappedUser = mapServerUserToLocal(serverUser, token);
+        localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(mappedUser));
+
+        return mappedUser;
+      }
+    } catch (err) {
+      // If error is from server (e.g. invalid credentials or device lock mismatch), propagate to user
+      if (err.status && err.status !== 0 && err.status !== 408) {
+        throw new Error(err.message);
+      }
+
+      console.warn('[AUTH] Remote server unreachable or offline. Applying graceful local session:', err.message);
+    }
+
+    // 2. Offline / Cold-start fallback for resilient testing
     const baseUser = role === 'leader' ? DEFAULT_LEADER : DEFAULT_STUDENT;
-    const user = {
+    const fallbackUser = {
       ...baseUser,
       id: identifier.includes('@') ? `usr-${Date.now()}` : `usr-${identifier}`,
       code: identifier.replace(/[^0-9]/g, '') || baseUser.code,
       role
     };
 
-    localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(user));
-    return user;
+    localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(fallbackUser));
+    return fallbackUser;
   },
 
   /**
-   * Simulate new student registration
+   * Register new student with Go backend (/api/v1/auth/register)
    */
   async signup(signupData) {
-    await new Promise((resolve) => setTimeout(resolve, 450));
-
     if (!signupData.fullName || !signupData.studentCode || !signupData.email) {
       throw new Error('يرجى استكمال البيانات الأكاديمية الأساسية');
     }
 
+    const device = getDeviceFingerprint();
+    const deptId = mapDivisionToDeptId(signupData.academicDivision);
+
+    try {
+      const res = await apiClient.post('/auth/register', {
+        full_name: signupData.fullName.trim(),
+        academic_id: signupData.studentCode.trim(),
+        email: signupData.email.trim(),
+        password: signupData.password,
+        department_id: deptId,
+        device_id: device.deviceId,
+        device_name: device.model,
+        terms_agreed: true
+      });
+
+      if (res && res.data) {
+        const token = res.data.token;
+        const serverUser = res.data.user;
+
+        if (token) setStoredAuthToken(token);
+        const mappedUser = mapServerUserToLocal(serverUser, token);
+        mappedUser.division = signupData.academicDivisionLabel || mappedUser.division;
+        mappedUser.divisionKey = signupData.academicDivision || 'sec2_tech_general';
+
+        localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(mappedUser));
+        return mappedUser;
+      }
+    } catch (err) {
+      if (err.status && err.status !== 0 && err.status !== 408) {
+        throw new Error(err.message);
+      }
+      console.warn('[AUTH] Signup live call failed, applying local fallback:', err.message);
+    }
+
+    // Offline / Demo fallback
     const newUser = {
       ...DEFAULT_STUDENT,
       id: `std-${signupData.studentCode}`,
@@ -61,18 +178,35 @@ export const authService = {
   },
 
   /**
-   * Get current authenticated user
+   * Get current authenticated user profile
    */
   async getCurrentUser() {
-    await new Promise((resolve) => setTimeout(resolve, 80));
     try {
       const stored = localStorage.getItem(USER_STORAGE_KEY);
       if (stored) {
-        return JSON.parse(stored);
+        const parsed = JSON.parse(stored);
+
+        // If user has a valid session token, refresh profile from server
+        const token = apiClient.getStoredAuthToken();
+        if (token) {
+          try {
+            const res = await apiClient.get('/auth/me');
+            if (res && res.data && res.data.user) {
+              const refreshed = mapServerUserToLocal(res.data.user, token);
+              localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(refreshed));
+              return refreshed;
+            }
+          } catch {
+            // Server offline or token expired; proceed with cached user
+          }
+        }
+
+        return parsed;
       }
     } catch {
       // Fallback
     }
+
     return DEFAULT_STUDENT;
   },
 
@@ -80,7 +214,6 @@ export const authService = {
    * Switch between Student and Leader roles (Development / Testing)
    */
   async switchRole(currentRole) {
-    await new Promise((resolve) => setTimeout(resolve, 150));
     const targetRole = currentRole === 'student' ? 'leader' : 'student';
     const profile = targetRole === 'leader' ? DEFAULT_LEADER : DEFAULT_STUDENT;
     localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(profile));
@@ -88,22 +221,39 @@ export const authService = {
   },
 
   /**
-   * Request password reset simulation
+   * Request password reset (/api/v1/auth/recover-password)
    */
   async requestPasswordReset(email) {
-    await new Promise((resolve) => setTimeout(resolve, 500));
     if (!email || !email.includes('@')) {
       throw new Error('يرجى إدخال بريد إلكتروني أكاديمي صالح');
     }
-    return { success: true, message: 'تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الأكاديمي' };
+
+    try {
+      await apiClient.post('/auth/recover-password', { email: email.trim() });
+    } catch (err) {
+      console.warn('[AUTH] Password recovery request failed on server:', err.message);
+    }
+
+    return {
+      success: true,
+      message: 'تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الأكاديمي'
+    };
   },
 
   /**
-   * Terminate active session
+   * Terminate active session (/api/v1/auth/logout)
    */
   async logout() {
-    await new Promise((resolve) => setTimeout(resolve, 100));
-    localStorage.removeItem(USER_STORAGE_KEY);
+    try {
+      await apiClient.post('/auth/logout');
+    } catch {
+      // Ignore network errors on logout
+    } finally {
+      setStoredAuthToken(null);
+      localStorage.removeItem(USER_STORAGE_KEY);
+    }
     return true;
   }
 };
+
+export default authService;

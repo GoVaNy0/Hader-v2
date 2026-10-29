@@ -75,6 +75,7 @@ export default function GrowthTreeWidget() {
             type="button"
             onClick={() => setIsGuideOpen(true)}
             className="text-[#fd8925] hover:underline flex items-center gap-1 font-medium text-[11px]"
+            aria-label="شرح مستويات شجرة النمو"
           >
             <span>شرح المستويات</span>
             <ChevronLeft className="w-3.5 h-3.5" />

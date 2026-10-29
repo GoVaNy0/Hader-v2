@@ -18,13 +18,14 @@ import {
 import Card from '../components/common/Card';
 import Button from '../components/common/Button';
 import Badge from '../components/common/Badge';
-import StudentScannerModal from '../components/modules/attendance/StudentScannerModal';
-import LeaderGeneratorModal from '../components/modules/attendance/LeaderGeneratorModal';
-import StudentCardModal from '../components/modules/home/StudentCardModal';
-import SessionPrintView from '../components/modules/attendance/SessionPrintView';
 import FraudLogsTable from '../components/modules/security/FraudLogsTable';
 import DeviceVerificationBadge from '../components/modules/security/DeviceVerificationBadge';
 import AttendanceStatusIndicator from '../components/modules/attendance/AttendanceStatusIndicator';
+
+const StudentScannerModal = React.lazy(() => import('../components/modules/attendance/StudentScannerModal'));
+const LeaderGeneratorModal = React.lazy(() => import('../components/modules/attendance/LeaderGeneratorModal'));
+const StudentCardModal = React.lazy(() => import('../components/modules/home/StudentCardModal'));
+const SessionPrintView = React.lazy(() => import('../components/modules/attendance/SessionPrintView'));
 import { useAuth } from '../context/AuthContext';
 import { useAttendance } from '../context/AttendanceContext';
 import { useGeolocation } from '../hooks/useGeolocation';
@@ -338,26 +339,36 @@ export default function AttendancePage() {
         </div>
       )}
 
-      {/* Modals */}
-      <StudentScannerModal
-        isOpen={isScannerOpen}
-        onClose={() => setIsScannerOpen(false)}
-      />
+      {/* Modals rendered on-demand via Suspense */}
+      <React.Suspense fallback={null}>
+        {isScannerOpen && (
+          <StudentScannerModal
+            isOpen={isScannerOpen}
+            onClose={() => setIsScannerOpen(false)}
+          />
+        )}
 
-      <StudentCardModal
-        isOpen={isStudentCardOpen}
-        onClose={() => setIsStudentCardOpen(false)}
-      />
+        {isStudentCardOpen && (
+          <StudentCardModal
+            isOpen={isStudentCardOpen}
+            onClose={() => setIsStudentCardOpen(false)}
+          />
+        )}
 
-      <LeaderGeneratorModal
-        isOpen={isLeaderGenOpen}
-        onClose={() => setIsLeaderGenOpen(false)}
-      />
+        {isLeaderGenOpen && (
+          <LeaderGeneratorModal
+            isOpen={isLeaderGenOpen}
+            onClose={() => setIsLeaderGenOpen(false)}
+          />
+        )}
 
-      <SessionPrintView
-        isOpen={isPrintOpen}
-        onClose={() => setIsPrintOpen(false)}
-      />
+        {isPrintOpen && (
+          <SessionPrintView
+            isOpen={isPrintOpen}
+            onClose={() => setIsPrintOpen(false)}
+          />
+        )}
+      </React.Suspense>
 
     </div>
   );

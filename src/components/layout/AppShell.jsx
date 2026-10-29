@@ -6,8 +6,9 @@ import Modal from '../common/Modal';
 import { useAuth } from '../../context/AuthContext';
 import { useAttendance } from '../../context/AttendanceContext';
 import { Bell, Check, AlertTriangle, Sparkles, X, QrCode, ScanLine, ShieldCheck } from 'lucide-react';
-import StudentScannerModal from '../modules/attendance/StudentScannerModal';
-import LeaderGeneratorModal from '../modules/attendance/LeaderGeneratorModal';
+
+const StudentScannerModal = React.lazy(() => import('../modules/attendance/StudentScannerModal'));
+const LeaderGeneratorModal = React.lazy(() => import('../modules/attendance/LeaderGeneratorModal'));
 
 export default function AppShell({ children }) {
   const { toastMessage, triggerToast, isLeader } = useAuth();
@@ -117,17 +118,21 @@ export default function AppShell({ children }) {
       </Modal>
 
       {/* Quick Action Modal (Center button from Mobile Dock) */}
-      {isLeader ? (
-        <LeaderGeneratorModal
-          isOpen={isQuickActionOpen}
-          onClose={() => setIsQuickActionOpen(false)}
-        />
-      ) : (
-        <StudentScannerModal
-          isOpen={isQuickActionOpen}
-          onClose={() => setIsQuickActionOpen(false)}
-        />
-      )}
+      <React.Suspense fallback={null}>
+        {isQuickActionOpen && (
+          isLeader ? (
+            <LeaderGeneratorModal
+              isOpen={isQuickActionOpen}
+              onClose={() => setIsQuickActionOpen(false)}
+            />
+          ) : (
+            <StudentScannerModal
+              isOpen={isQuickActionOpen}
+              onClose={() => setIsQuickActionOpen(false)}
+            />
+          )
+        )}
+      </React.Suspense>
     </div>
   );
 }

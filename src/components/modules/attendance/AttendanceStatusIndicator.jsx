@@ -43,6 +43,15 @@ export default function AttendanceStatusIndicator({
       className={`flex flex-col items-center justify-center select-none ${className}`}
     >
       <div
+        role={interactive ? "button" : undefined}
+        tabIndex={interactive ? 0 : undefined}
+        onKeyDown={interactive ? (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleToggle();
+          }
+        } : undefined}
+        aria-label={interactive ? (isConfirmed ? 'التبديل إلى وضع المسح' : 'التبديل إلى وضع التأكيد') : undefined}
         onClick={interactive ? handleToggle : undefined}
         title={interactive ? 'انقر للتبديل التفاعلي بين وضع المسح والتأكيد' : undefined}
         style={{ width: size, height: size }}

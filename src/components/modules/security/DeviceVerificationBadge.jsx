@@ -39,6 +39,7 @@ export default function DeviceVerificationBadge({ className = '' }) {
           type="button"
           onClick={resetBinding}
           className="text-[#fd8925] hover:underline flex items-center gap-1 cursor-pointer"
+          aria-label="تجديد بصمة الجهاز"
         >
           <RefreshCw className="w-3 h-3" />
           <span>تجديد البصمة</span>

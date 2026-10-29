@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import DaySwitcher from '../components/modules/schedule/DaySwitcher';
 import ScheduleSearchBar from '../components/modules/schedule/ScheduleSearchBar';
 import LectureCard from '../components/modules/schedule/LectureCard';
-import StudentScannerModal from '../components/modules/attendance/StudentScannerModal';
-import LeaderGeneratorModal from '../components/modules/attendance/LeaderGeneratorModal';
 import Card from '../components/common/Card';
 import Badge from '../components/common/Badge';
+
+const StudentScannerModal = React.lazy(() => import('../components/modules/attendance/StudentScannerModal'));
+const LeaderGeneratorModal = React.lazy(() => import('../components/modules/attendance/LeaderGeneratorModal'));
 import { useSchedule } from '../hooks/useSchedule';
 import { useAuth } from '../context/AuthContext';
 import { Calendar, Clock, BookOpen, Laptop, Sparkles } from 'lucide-react';
@@ -115,18 +116,24 @@ export default function SchedulePage() {
         </div>
       )}
 
-      {/* Modals */}
-      <StudentScannerModal
-        isOpen={isScannerOpen}
-        onClose={() => setIsScannerOpen(false)}
-        lecture={selectedLecture}
-      />
+      {/* Modals rendered on-demand via Suspense */}
+      <React.Suspense fallback={null}>
+        {isScannerOpen && (
+          <StudentScannerModal
+            isOpen={isScannerOpen}
+            onClose={() => setIsScannerOpen(false)}
+            lecture={selectedLecture}
+          />
+        )}
 
-      <LeaderGeneratorModal
-        isOpen={isLeaderGenOpen}
-        onClose={() => setIsLeaderGenOpen(false)}
-        initialCourseId={selectedLecture?.id}
-      />
+        {isLeaderGenOpen && (
+          <LeaderGeneratorModal
+            isOpen={isLeaderGenOpen}
+            onClose={() => setIsLeaderGenOpen(false)}
+            initialCourseId={selectedLecture?.id}
+          />
+        )}
+      </React.Suspense>
 
     </div>
   );
