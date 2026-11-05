@@ -6,7 +6,8 @@ export {
   USER_STORAGE_KEY,
   ApiError,
   getStoredAuthToken,
-  setStoredAuthToken
+  setStoredAuthToken,
+  resolveUrl
 } from './apiClient.js';
 export { authService } from './authService.js';
 export { attendanceService } from './attendanceService.js';

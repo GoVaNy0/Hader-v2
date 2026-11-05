@@ -11,7 +11,8 @@ export {
   USER_STORAGE_KEY,
   ApiError,
   getStoredAuthToken,
-  setStoredAuthToken
+  setStoredAuthToken,
+  resolveUrl
 } from './apiClient.js';
 
 export { default } from './apiClient.js';

@@ -7,15 +7,24 @@
 import { getDeviceFingerprint } from '../utils/deviceUtils.js';
 
 // 1. Dynamic API Base URL Configuration with https://hader-websit.fly.dev fallback
-const rawEnvUrl = (typeof import.meta !== 'undefined' && import.meta.env)
+// Enforce HTTPS protocol and dynamically strip trailing slashes to prevent 308 Permanent Redirects
+const rawEnvUrl = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_API_URL)
   ? import.meta.env.VITE_API_URL
-  : (typeof process !== 'undefined' && process.env ? process.env.VITE_API_URL : undefined);
+  : (typeof process !== 'undefined' && process.env?.VITE_API_URL ? process.env.VITE_API_URL : undefined);
 
-export const API_BASE_URL = (rawEnvUrl && typeof rawEnvUrl === 'string' && rawEnvUrl.trim() !== '')
-  ? rawEnvUrl.trim().replace(/\/+$/, '')
+let baseUrl = (rawEnvUrl && typeof rawEnvUrl === 'string' && rawEnvUrl.trim() !== '')
+  ? rawEnvUrl.trim()
   : 'https://hader-websit.fly.dev';
 
-export const API_V1_URL = `${API_BASE_URL}/api/v1`;
+if (!baseUrl.startsWith('http://') && !baseUrl.startsWith('https://')) {
+  baseUrl = `https://${baseUrl}`;
+}
+baseUrl = baseUrl.replace(/^http:\/\//i, 'https://'); // Enforce HTTPS
+
+// Strip any trailing slashes dynamically (and remove duplicate /api(/v1) if specified in env)
+export const API_BASE_URL = baseUrl.replace(/\/+$/, '').replace(/\/api(\/v1)?$/i, '');
+
+export const API_V1_URL = `${API_BASE_URL}/api/v1`.replace(/\/+$/, '');
 
 // LocalStorage Keys
 export const AUTH_TOKEN_KEY = 'hader_auth_token';
@@ -97,17 +106,30 @@ export class ApiError extends Error {
 }
 
 /**
- * Normalize requested path into fully-qualified URL targeting Fly.io host
+ * Normalize requested path into fully-qualified URL targeting Fly.io host.
+ * Automatically enforces HTTPS and strips all trailing slashes dynamically to eliminate 308 redirects.
  */
-function resolveUrl(path) {
+export function resolveUrl(path) {
+  if (!path) return API_V1_URL;
+
+  // If already a fully qualified URL
   if (/^https?:\/\//i.test(path)) {
-    return path;
+    return path.replace(/^http:\/\//i, 'https://').replace(/\/+$/, '');
   }
-  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+
+  // Ensure single leading slash and strip trailing slashes dynamically
+  let cleanPath = path.startsWith('/') ? path : `/${path}`;
+  cleanPath = cleanPath.replace(/\/+$/, '');
+
   if (cleanPath.startsWith('/api/')) {
-    return `${API_BASE_URL}${cleanPath}`;
+    return `${API_BASE_URL}${cleanPath}`.replace(/\/+$/, '');
   }
-  return `${API_V1_URL}${cleanPath}`;
+
+  if (cleanPath === '/health' || cleanPath === '' || cleanPath === '/') {
+    return `${API_BASE_URL}${cleanPath === '/' ? '' : cleanPath}`.replace(/\/+$/, '');
+  }
+
+  return `${API_V1_URL}${cleanPath}`.replace(/\/+$/, '');
 }
 
 /**
