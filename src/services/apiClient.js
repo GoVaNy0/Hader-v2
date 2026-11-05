@@ -16,6 +16,11 @@ let baseUrl = (rawEnvUrl && typeof rawEnvUrl === 'string' && rawEnvUrl.trim() !=
   ? rawEnvUrl.trim()
   : 'https://hader-websit.fly.dev';
 
+// Sanitize accidental markdown link syntax if present e.g. [https://...](https://...)
+if (baseUrl.includes('[') && baseUrl.includes('](')) {
+  baseUrl = baseUrl.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$2');
+}
+
 if (!baseUrl.startsWith('http://') && !baseUrl.startsWith('https://')) {
   baseUrl = `https://${baseUrl}`;
 }
@@ -112,13 +117,19 @@ export class ApiError extends Error {
 export function resolveUrl(path) {
   if (!path) return API_V1_URL;
 
+  // Clean any markdown link syntax if accidentally present
+  let cleanStr = path;
+  if (typeof cleanStr === 'string' && cleanStr.includes('[') && cleanStr.includes('](')) {
+    cleanStr = cleanStr.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$2');
+  }
+
   // If already a fully qualified URL
-  if (/^https?:\/\//i.test(path)) {
-    return path.replace(/^http:\/\//i, 'https://').replace(/\/+$/, '');
+  if (/^https?:\/\//i.test(cleanStr)) {
+    return cleanStr.replace(/^http:\/\//i, 'https://').replace(/\/+$/, '');
   }
 
   // Ensure single leading slash and strip trailing slashes dynamically
-  let cleanPath = path.startsWith('/') ? path : `/${path}`;
+  let cleanPath = cleanStr.startsWith('/') ? cleanStr : `/${cleanStr}`;
   cleanPath = cleanPath.replace(/\/+$/, '');
 
   if (cleanPath.startsWith('/api/')) {
